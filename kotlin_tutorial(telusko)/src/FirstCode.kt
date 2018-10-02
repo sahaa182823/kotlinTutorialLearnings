@@ -127,6 +127,61 @@ fun main(args : Array<String>)
     var Raja : Newhuman = AlienMan()
     Raja.think()
 
+    //implementing Constructor in Inheritance
+    var plant : Tree = CoconutTree(20) // hare "age" is passing to CoconutTree primary constructor
+    // first then it is getting passed to Tress primary constructor
+
+
+    //Implementing the Concept of Abstract Class
+    var bhumika : Girl = Woman()
+    bhumika.talk()
+    bhumika.think()
+
+    //Implementing Interface
+    var obj8 =  C()
+
+    obj8.show()
+    obj8.display()
+    obj8.ABC()
+
+    //Implementing Data class
+    var lap1 = Laptop("Dell",2000)
+    var lap2 = Laptop("Apple",2500)
+    var lap3 = lap1.copy(prize = 2200) // if you want to change value of any parameter you have to define like this
+
+    println(lap3)
+
+    println(lap1.equals(lap2))
+
+    // what data class is actually doing is by implementing "Data" infront of a class you can enable this features:
+    //  1) enabling toString()
+    //  2) .equals() and hashCode
+    //  3) .copy()
+
+
+    // Implementing Object keyword
+
+    Bookshelf.books.add(Book("java",50))
+    Bookshelf.books.add(Book("c",40))
+    Bookshelf.books.add(Book("Sql",80))
+
+    Bookshelf.showbooks()
+
+
+    // implementing Anonymous inner class
+    var programar = object : Humaninterface // here object keyword is used to initialize anonymous class object of Humaninterface
+    {
+        override fun think() {
+            println("think virtually...")
+        }
+    }
+
+    programar.think()
+
+    //implementing Companion object
+    AB.show()
+
+
 }
 
 fun add(a : Int, b: Int) : Int = a + b
@@ -143,6 +198,8 @@ operator infix fun Alien.plus(a : Alien) :  Alien {
     var newAlien = Alien()
     newAlien.skills = this.skills + " " + a.skills
     return newAlien
+
+
 }
 
 
@@ -171,7 +228,7 @@ tailrec fun factTail(number1: BigInteger, result1 : BigInteger) : BigInteger{
 class Human(var n : String){
     var name : String = n
     fun think(){
-        println("kortlin is awsom .. $name")
+        println("kotlin is awsome .. $name")
     }
 }
 
@@ -192,16 +249,134 @@ class Human2(var n : String){
     }
 }
 
-// Implementing Inheritence
-open class Newhuman(){
-    open fun think(){
+// Implementing Inheritance
+open class Newhuman()
+{
+    open fun think() // "open" also allows you to override a final method bcz in kotlin method and class are by default final
+    {
         println("Real Think")
     }
 }
 
 class AlienMan : Newhuman(){
-    override fun think() {
+    override fun think() // override will allow you to override a method otherwise you cant't
+    {
         println("virtual Thinking")
     }
 }
+
+
+//constructor in inheritance
+open class Tree(age : Int)// it means primary constructor
+{
+    init {
+        println("In Tree and age is $age")
+    }
+    open fun root(){
+        println("Tree sucks water")
+    }
+}
+
+class CoconutTree(age : Int) : Tree(age){
+    init {
+        println("In CoconutTree")
+    }
+    override  fun root(){
+        println("Coconut tree sucks water")
+    }
+}
+
+//Concept of Abstract Class
+abstract class Girl{
+    abstract fun think()
+
+    fun talk(){
+        println("Talking....")
+    }
+}
+
+class Lady : Girl(){
+    override fun think() // according to abstruct class you have to implement this think() abstract method other wise it will also be a abstract class
+    {
+        println("Thinking about marriage")
+    }
+}
+
+class Woman : Girl(){
+    override fun think()
+    {
+        println("Thinking about child")
+    }
+}
+
+
+// Implementing Interface
+interface A{
+    fun show()
+    fun ABC(){
+        println("in ABC A")
+    }
+}
+
+interface B{
+    fun display()
+    fun ABC(){
+        println("in ABC B")
+    }
+}
+
+class C : A,B{
+
+    override fun show(){
+        println("in show")
+    }
+    override  fun display(){
+        println("in display")
+    }
+    override fun ABC(){
+        println("in ABC C")
+        // but if you want to call ABC() of a particular interface then you have to use "super<name of interface>" generics to solve the issue
+        super<A>.ABC()
+    }
+}
+
+//Implementing Data Class
+data class Laptop(val brand: String,val prize : Int){
+    fun show (){
+        println("My laptop is awsome....")
+    }
+}
+
+//Using object keyword
+data class Book (var name :  String , var prize :  Int )
+
+object Bookshelf // this will be treated as a object itself so dont need to create object in main()
+{
+     var books = arrayListOf<Book>()
+
+        fun showbooks(){
+            for(i in books){
+                println(i)
+            }
+        }
+}
+
+//Anonymous Inner class
+
+interface Humaninterface{
+    fun think();
+}
+
+//Companion object
+class AB{
+    companion object {
+        @JvmStatic // if want to use any method as static we need to deaclear annotation @JvmStatic and we have to use "companion object"
+        fun show(){
+            println("hello")
+        }
+    }
+}
+
+
+
 
